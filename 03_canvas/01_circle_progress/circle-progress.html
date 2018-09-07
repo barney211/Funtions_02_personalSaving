@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<style>
+	
+	</style>
+</head>
+<body>
+<canvas id="c2" width="500" height="400" onclick="group()" >
+    您的浏览器版本太低，请升级！
+</canvas>
+<script>
+    var c2=document.getElementById("c2");
+    var ctx=c2.getContext("2d");
+
+    var timer=null; //用于调用 圆圈进度的动态，因为可多次调用（暂时用全局变量）
+
+    group();  //先调用一次
+
+function group(){
+    ctx.clearRect(0,0,500,400);
+    drawCoordinate();
+    new30Circle();
+    circleProgress();
+}
+//1. 坐标轴 函数
+    function drawCoordinate(){
+        ctx.beginPath();
+        ctx.lineWidth=2;
+        ctx.moveTo(10,390);
+        ctx.lineTo(490,390);
+        ctx.lineTo(485,395);
+        ctx.lineTo(490,390);
+        ctx.lineTo(485,385);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.lineWidth=2;
+        ctx.moveTo(20,395);
+        ctx.lineTo(20,10);
+        ctx.lineTo(15,15);
+        ctx.lineTo(20,10);
+        ctx.lineTo(25,15);
+        ctx.strokeStyle="red";
+        ctx.stroke();
+    }
+
+
+//2.画30个圆 函数
+    function new30Circle() {
+        for(var i=0;i<30;i++){
+            ctx.beginPath();
+            ctx.lineWidth=2;
+            ctx.arc(rn(0,500),rn(0,400),rn(5,50),0*Math.PI/180,360*Math.PI/180);
+            ctx.strokeStyle=rc(0,255);
+            ctx.stroke();
+        }
+        //返回指定范围内的随机数
+        function rn(min,max){
+            var rs=Math.random()*(max-min)+min;
+            return Math.floor(rs);
+        }
+        //返回指定范围的颜色 rgb(0,0,0);
+        function rc(min,max){
+            var r=rn(min,max);
+            var g=rn(min,max);
+            var b=rn(min,max);
+            return `rgb(${r},${g},${b})`;
+        }
+    }
+
+//3.圆环进度条 函数
+    function circleProgress(){
+        ctx.beginPath();
+        ctx.arc(200,200,100,0*Math.PI/180,360*Math.PI/180);
+        ctx.strokeStyle="#ddd";
+        ctx.lineWidth=30;
+        ctx.stroke();
+        var n=-90,y=0;
+        clearInterval(timer); //清除上一个timer
+        timer=null;
+        timer=setInterval(()=>{
+            ctx.fillStyle="blue";
+            ctx.clearRect(180,180,80,80);
+            ctx.font="30px sans-serif";
+            ctx.fillText(`${y}%`,180,210);
+            ctx.beginPath();
+            ctx.arc(200,200,100,-90*Math.PI/180,n*Math.PI/180);
+            ctx.strokeStyle="green";
+            ctx.stroke();
+            n+=18;
+            y+=5;
+            if(y>100){
+                clearInterval(timer);
+                timer=null;
+            }
+        },500);
+    }
+
+
+</script>
+</body>
+</html>

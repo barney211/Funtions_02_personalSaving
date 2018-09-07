@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        canvas{
+            background:#ddd;
+        }
+    </style>
+</head>
+<body>
+<canvas id="c2" width="1500" height="800" >
+    您的浏览器版本太低，请升级！
+</canvas>
+<script>
+    var c2=document.getElementById("c2");
+    var ctx=c2.getContext("2d");
+
+//通过调用函数，绘制张口和闭口
+    function open(idx){
+        var step=idx*200;
+        ctx.clearRect(0,0,1500,800);
+        ctx.beginPath();
+        ctx.arc(200+step,200,100,30*Math.PI/180,330*Math.PI/180);
+        ctx.strokeStyle="blue";
+        ctx.lineTo(200+step,200);
+        ctx.lineTo(288+step,249);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(200+step,150,25,0*Math.PI/180,360*Math.PI/180)
+        ctx.fillStyle="blue";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(210+step,140,10,0*Math.PI/180,360*Math.PI/180);
+        ctx.fillStyle="#fff";
+        ctx.fill();
+
+    }
+    function close(idx){
+        var step=idx*200;
+        ctx.clearRect(0,0,1500,800);
+        ctx.beginPath();
+        ctx.arc(200+step,200,100,0*Math.PI/180,360*Math.PI/180);
+        ctx.lineTo(200+step,200);
+        ctx.strokeStyle="blue";
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(200+step,150,25,0*Math.PI/180,360*Math.PI/180);
+        ctx.fillStyle="blue";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(210+step,140,10,0*Math.PI/180,360*Math.PI/180);
+        ctx.fillStyle="#fff";
+        ctx.fill();
+
+    }
+
+    var idx=0;     //用来记录 运动轨迹 和 张口闭口
+    var timer=setInterval(function(){
+        if(idx>6){
+            idx=0;
+        }
+        if(idx%2==0){
+            open(idx);
+        }else{
+            close(idx);
+        }
+        idx++;
+    },500)
+
+
+</script>
+</body>
+</html>

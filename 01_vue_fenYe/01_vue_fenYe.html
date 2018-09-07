@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue 分页</title>
+    <script src="./js/vue.js"></script>
+    <style>
+        *{
+            color:white;
+            font-size:14px;
+            box-sizing: border-box;
+        }
+
+        .btns{
+            background: dodgerblue;
+            height:30px;
+            line-height: 30px;
+            margin-right:10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .largerBt{
+            width:60px;
+        }
+        .smallerBt{
+            width:25px;
+        }
+        #example{
+            display: flex;
+        }
+        .btnSelect{
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+<div id="example">
+    <div class="btns largerBt"  @click="prePage">上一页</div>
+    <div v-bind:class="nowPage==tmp?'smallerBt btns btnSelect':'smallerBt btns'"
+            v-on:click="choosePage(tmp)"
+            v-for="tmp in pageList">{{tmp}}</div>
+    <div class="btns largerBt"  v-on:click="nextPage">下一页</div>
+    <!--下一页的 disabled 须根据数据库中数据决定-->
+</div>
+<script>
+    new Vue({
+        el: "#example",
+        data: {
+            pageList:[1,2,3,4,5],
+            nowPage:1
+        },
+        methods:{
+            choosePage:function (page) {
+                this.nowPage=page;
+                if(page==2){
+                    this.pageList=[1,2,3,4,5];
+                }
+                if(page>=3){
+                    if(page>=13){
+                        this.pageList=[11,12,13,14,15];    //最多15页
+                    }else{
+                        this.pageList=[page-2,page-1,page,page+1,page+2];
+                    }
+
+                }
+                //之后根据 nowPage 发起网络请求
+
+
+            },
+
+            prePage:function () {
+                if(this.nowPage==1){  //当第一页已经请求之后无需再请求  无需绑定 属性 disabled
+                    return
+                }
+                if(this.nowPage>1){
+                    this.nowPage--;
+                }
+
+                if(this.nowPage==2){
+                    this.pageList=[1,2,3,4,5];
+                }
+                if(this.nowPage>=3){
+                    if(this.nowPage>=13){
+                        this.pageList=[11,12,13,14,15];    //最多15页
+                    }else{
+                        this.pageList=[this.nowPage-2,this.nowPage-1,this.nowPage,this.nowPage+1,this.nowPage+2];
+                    }
+                }
+                //之后根据 nowPage 发起网络请求
+            },
+
+            nextPage:function () {
+                /*
+                if(this.nowPage==this.pageList.length){  //当最后一页已经请求之后无需再请求 / 咱无数据返回所以先注销
+                    return
+                }
+                */
+                if(this.nowPage<15){ //具体数据等服务器传回最终页数而确定
+                    this.nowPage++;
+                }
+                if(this.nowPage==2){
+                    this.pageList=[1,2,3,4,5];
+                }
+                if(this.nowPage>=3){
+                    if(this.nowPage>=13){
+                        this.pageList=[11,12,13,14,15];    //最多15页
+                    }else{
+                        this.pageList=[this.nowPage-2,this.nowPage-1,this.nowPage,this.nowPage+1,this.nowPage+2];
+                    }
+
+                }
+                //之后根据 nowPage 发起网络请求
+
+            }
+        }
+    });
+</script>
+</body>
+</html>

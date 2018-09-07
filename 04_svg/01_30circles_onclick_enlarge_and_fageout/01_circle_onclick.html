@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+   <svg width="500" height="400" id="svg1">
+
+   </svg>
+   <script>
+       var svg1=document.getElementById("svg1");    //获取画布
+
+       for(var i=0;i<30;i++){                      //初始画30个圆圈
+           var r=parseInt(Math.random()*100);
+           var x=parseInt(Math.random()*500);
+           var y=parseInt(Math.random()*400);
+           var opa=Math.random();
+           var col=`rgb(${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},${parseInt(Math.random()*255)})`;
+           svg1.innerHTML+=`<circle r=${r} cx=${x} cy=${y} fill=${col} fill-opacity=${opa} stroke="red"></circle>`;
+       }
+
+       var clicks=document.querySelectorAll("#svg1>circle"); //获取每一个圆圈
+
+       for(var i=0;i<clicks.length;i++){                     //对每一个圆圈绑定点击事件
+           clicks[i].onclick=function(){
+               var that=this; //setInterval 的 this指向会发生变化
+               //为了防止当前元素再次被点击
+               that.onclick=null;
+               //启动定时器 ，让原变大变淡
+               var t=setInterval(function(){
+                   var r=that.getAttribute("r");               //获取属性
+                   r*=1.05;
+                   that.setAttribute("r",r)                    //更改属性
+                   var p=that.getAttribute("fill-opacity");
+                   p*=0.6;
+                   that.setAttribute("fill-opacity",p)
+                   if(p<0.001){
+                       clearInterval(t);
+                       t=null;
+                       svg1.removeChild(that)//删除指定图像，节点
+                   }
+               },100)
+
+           }
+       }
+
+       function rn(min,max){                                  // 取随机数的函数
+           return Math.floor(Math.random()*(max-min)+min);
+       }
+       function rc(min,max){                                //取随机颜色的函数
+           var r=rn(0,255);
+           var g=rn(0,255);
+           var b=rn(0,255);
+           return `rgb(${r},${g},${b})`;
+       }
+
+   </script>
+</body>
+</html>

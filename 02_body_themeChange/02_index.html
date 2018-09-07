@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .blue{
+            background: #ddf;
+            color:#33a;
+        }
+        .pink{
+            background: #fdf;
+            color:#a3a;
+        }
+        .dark{
+            background: #333;
+            color:#eee;
+        }
+    </style>
+</head>
+<body>
+<h1>首页内容</h1>
+<select name="" id="s1">
+    <option value="blue">蔚蓝天空</option>
+    <option value="pink">芭比公主</option>
+    <option value="dark">暗黑主题</option>
+</select>
+<a href="02_usercenter.html" target="_blank">去用户中心</a>
+<script>
+    document.getElementById("s1").onchange=function () { // 动态更改主题颜色
+        var color = this.value;
+        document.body.className = color;
+        localStorage.setItem("userStyle", color);
+    }
+
+ var color=localStorage.getItem("userStyle");  //获取最后一次更改后的主题
+ if(color){
+     document.body.className=color;
+ }
+
+
+</script>
+</body>
+</html>
